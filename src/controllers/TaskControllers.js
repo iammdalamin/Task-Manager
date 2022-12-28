@@ -21,7 +21,7 @@ exports.taskCreate = (req, res) => {
 
 exports.taskDelete = (req, res) => {
     let id = req.params.id;
-    
+    console.log(id);
 
     TaskModel.deleteOne({_id:id}, (err, data)=> {
         if (err) {

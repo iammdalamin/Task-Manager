@@ -1,11 +1,11 @@
 import axios from "axios";
-import {ErrorToast, SuccessToast} from "../helper/FormHelper";
+import { ErrorToast, SuccessToast } from "../helper/FormHelper";
+import { getToken, setEmail, setOTP, setToken, setUserDetails } from "../helper/SessionHelper";
+import { SetProfile } from "../redux/state-slice/profile-slice";
+import { HideLoader, ShowLoader } from "../redux/state-slice/settings-slice";
+import { SetSummary } from "../redux/state-slice/summary-slice";
+import { SetCanceledTask, SetCompletedTask, SetNewTask, SetProgressTask } from "../redux/state-slice/task-slice";
 import store from "../redux/store/store";
-import {HideLoader, ShowLoader} from "../redux/state-slice/settings-slice";
-import {getToken, setEmail, setOTP, setToken, setUserDetails} from "../helper/SessionHelper";
-import {SetCanceledTask, SetCompletedTask, SetNewTask, SetProgressTask} from "../redux/state-slice/task-slice";
-import {SetSummary} from "../redux/state-slice/summary-slice";
-import {SetProfile} from "../redux/state-slice/profile-slice";
 const BaseURL="https://task-manager-server-fjky.onrender.com/api/v1"
 
 const AxiosHeader={headers:{"token":getToken()}}
@@ -139,18 +139,19 @@ export function SummaryRequest(){
 export function DeleteRequest(id){
     store.dispatch(ShowLoader())
     let URL=BaseURL+"/taskDelete/"+id;
-    return axios.post(URL,AxiosHeader).then((res)=>{
+    return axios.post(URL, AxiosHeader).then((res) => {
+        console.log(res);
         store.dispatch(HideLoader())
         if(res.status===200){
             SuccessToast("Delete Successful")
             return true;
         }
         else{
-            ErrorToast("Something Went Wrong")
+            ErrorToast("Delete Failed")
             return false;
         }
     }).catch((err)=>{
-        ErrorToast("Something Went Wrong")
+        ErrorToast("Delete Failed")
         store.dispatch(HideLoader())
         return false;
     });

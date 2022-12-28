@@ -15,9 +15,11 @@ const New = () => {
   }, []);
 
   const NewList = useSelector((state) => state.task.New);
-
   const DeleteItem = (id) => {
+    console.log(id);
+
     DeleteToDO(id).then((result) => {
+      console.log(result);
       if (result === true) {
         TaskListByStatus("New");
       }
